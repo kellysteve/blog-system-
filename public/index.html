@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Blog Admin</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f7f9;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            background: linear-gradient(135deg, #6e8efb, #a777e3);
+            color: white;
+            padding: 1rem;
+            text-align: center;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+        
+        /* Login Form */
+        .login-container {
+            background: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+            margin: 2rem auto;
+        }
+        
+        .login-container h2 {
+            text-align: center;
+            margin-bottom: 1.5rem;
+            color: #333;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+        
+        .form-group input {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+        
+        button {
+            background: linear-gradient(135deg, #6e8efb, #a777e3);
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            width: 100%;
+            transition: all 0.3s ease;
+        }
+        
+        button:hover {
+            background: linear-gradient(135deg, #5c7ce9, #9466d4);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        
+        /* Blog Form */
+        .blog-form {
+            background: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-bottom: 2rem;
+        }
+        
+        .blog-form h2 {
+            margin-bottom: 1.5rem;
+            color: #333;
+        }
+        
+        textarea {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1rem;
+            min-height: 200px;
+            resize: vertical;
+        }
+        
+        /* Blog Posts */
+        .blog-posts {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        
+        .blog-card {
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+        
+        .blog-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+        
+        .blog-content {
+            padding: 1.5rem;
+        }
+        
+        .blog-title {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+            color: #333;
+        }
+        
+        .blog-date {
+            color: #777;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+        
+        .blog-text {
+            color: #555;
+            margin-bottom: 1rem;
+            white-space: pre-line;
+        }
+        
+        .logout-btn {
+            background: #ff6b6b;
+            max-width: 150px;
+            margin-top: 1rem;
+        }
+        
+        .logout-btn:hover {
+            background: #ff5252;
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 1rem;
+            background: #4ecdc4;
+            color: white;
+            border-radius: 4px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transform: translateX(100%);
+            transition: transform 0.3s ease;
+            z-index: 1000;
+        }
+        
+        .notification.show {
+            transform: translateX(0);
+        }
+        
+        .error {
+            background: #ff6b6b;
+        }
+        
+        @media (max-width: 768px) {
+            .blog-posts {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Simple Blog Admin</h1>
+            <p class="subtitle">Share your thoughts with the world</p>
+        </header>
+
+        <!-- Login Section -->
+        <div id="loginSection" class="login-container">
+            <h2>Admin Login</h2>
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input type="text" id="username" placeholder="Enter username">
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" placeholder="Enter password">
+            </div>
+            <button id="loginBtn">Login</button>
+        </div>
+
+        <!-- Admin Section -->
+        <div id="adminSection" class="hidden">
+            <div class="blog-form">
+                <h2>Create New Blog Post</h2>
+                <div class="form-group">
+                    <label for="blogTitle">Title</label>
+                    <input type="text" id="blogTitle" placeholder="Enter blog title">
+                </div>
+                <div class="form-group">
+                    <label for="blogContent">Content</label>
+                    <textarea id="blogContent" placeholder="Write your blog content here..."></textarea>
+                </div>
+                <button id="publishBtn">Publish Blog</button>
+                <button class="logout-btn" id="logoutBtn">Logout</button>
+            </div>
+
+            <h2 style="margin-bottom: 1rem;">Published Blogs</h2>
+            <div id="blogList" class="blog-posts">
+                <!-- Blog posts will be displayed here -->
+            </div>
+        </div>
+
+        <!-- Public Blog View -->
+        <div id="publicView">
+            <h2 style="text-align: center; margin-bottom: 2rem;">Latest Blog Posts</h2>
+            <div id="publicBlogList" class="blog-posts">
+                <!-- Public blog posts will be displayed here -->
+            </div>
+        </div>
+    </div>
+
+    <div id="notification" class="notification hidden"></div>
+
+    <script src="script.js"></script>
+</body>
+          </html>
